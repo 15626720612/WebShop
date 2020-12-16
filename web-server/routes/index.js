@@ -538,6 +538,25 @@ router.post('/api/delete_goods', (req, res) => {
     });
 });
 
+/**
+ * 订单下单
+ */
+router.post('/api/order/create',(req,res)=>{
+    // 获取数据
+    const goods_id = req.body.goods_id;
+    const user_id = req.body.user_id;
+    let order_num = new Date().getTime() + "" + user_id;
+    let sqlStr = "INSERT INTO tb_order(order_num,user_id,goods_id,status) VALUES (?,?,?,?)";
+    let sqlParams = [order_num,user_id,goods_id,0];
+    conn.query(sqlStr,sqlParams, (error, results, fields) => {
+        if (error) {
+            res.json({err_code: 0, message: '服务器内部错误!'});
+        } else {
+            res.json({success_code: 200, message: "下单成功"});
+        }
+    });
+})
+
 /*********************************** 用户中心 **************************************** */
 
 /**

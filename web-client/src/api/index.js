@@ -57,6 +57,9 @@ export const changeUserPhone = (id, phone, code) => ajax(BASE_URL + '/api/change
 // 加入购物车
 export const addGoodsToCart = (user_id, goods_id, goods_name, thumb_url, price,buy_count, counts) => ajax(BASE_URL + '/api/add_shop_cart', {user_id, goods_id, goods_name, thumb_url, price, buy_count, counts}, 'POST');
 
+// 创建订单
+export const createOrder = (user_id, goods_id) => ajax(BASE_URL + '/api/order/create', {user_id, goods_id}, 'POST');
+
 // 单个商品数量的改变
 export const changeGoodsCount = (goods_id, count, user_id) => ajax(BASE_URL + '/api/change_goods_count', {goods_id, count, user_id}, 'POST');
 
