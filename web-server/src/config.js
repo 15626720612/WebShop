@@ -7,11 +7,11 @@ export default {
   uploadsAvatarPath: join(__dirname, "../public/avatar_uploads"), // 上传的头像所放置的文件夹
   port: parseInt(process.env.PORT, 10) || 3000, // 端口号
 
-  host: "47.102.138.101", // 数据库的地址
-  user: "root", // 账号
-  password: "123456", // 密码
-  database: "web_shop", // 数据库名称
-
-  secret: "123456", // session
-  maxAge: 1000 * 60 * 60 * 6 // session保存6个小时
+	host: '47.102.138.101', // 数据库的地址
+	user: 'root', // 账号
+	password: '123456', // 密码
+	database: 'web_shop', // 数据库名称
+	
+	secret: '123456',  // session
+	maxAge: 1000 * 60 * 60 * 6  // session保存6个小时
 }

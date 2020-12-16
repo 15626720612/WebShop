@@ -1,180 +1,236 @@
 <template>
   <div id="shopcar">
     <div id="content">
-			<div class="header">
-				<img src="./../../common/img/logo-round.png" class="header_logo" />
-				<span>购物车</span>
-			</div>
-			<div class="cont_title">
-				<span>全部商品</span>
-			</div>
-			<div class="cont_op">
-				<div class="con_selet">
-					<input type="checkbox" class="con_selectAll" :checked="isSelectedAll" @click.stop="selectedAll(isSelectedAll)"/>
-					<label for="con_selectAll">全选</label>
-				</div>
-				<div>商品信息</div>
-				<div>单价</div>
-				<div>数量</div>
-				<div>金额</div>
-				<div>操作</div>
-			</div>
-			<div class="pro_box" v-if="cartgoods.length">
-				<div class="goods" v-for="(goods, index) in cartgoods" :key="index">
-					<ul class="item_content">
-						<li class="td td-chk">
-							<div>
-								<input type="checkbox" class="checkBox" :checked="goods.checked" @click="singleSelected(goods)"/>
-							</div>
-						</li>
-						<li class="td td-item">
-							<div class="td-item-pic">
-								<img :src="goods.thumb_url"/>
-							</div>
-							<div class="td-item-info">{{goods.goods_name}}</div>
-						</li>
-						<li class="td td-price"><strong>{{goods.price / 100 | moneyFormat}}</strong></li>
-						<li class="td td-amount">
-							<div class="item-amout">
-                <el-input-number v-model="goods.buy_count" :min="1" :max="goods.counts" @change="updateGoodsCount(goods, goods.buy_count)"></el-input-number>
-							</div>
-						</li>
-						<li class="td td-sum"><strong>{{goods.buy_count * goods.price /100 | moneyFormat}}</strong></li>
-						<li class="td td-op"><a @click="clickTrash(goods)">删除</a></li>
-					</ul>
-				</div>
-			</div>
-      <div class="pro_box" v-else>购物车里空空如也</div>
-		</div>
-		<div id="footer">
-			<div class="foot_select">
-				<input type="checkbox" class="foot_selectAll" name="foot_selectAll" :checked="isSelectedAll" @click.stop="selectedAll(isSelectedAll)"/>
-				<label for="foot_selectAll">全选</label>
-			</div>
-			<div class="foot_op">
-				<a class="foot_remove" @click.prevent="emptyCart">清空购物车</a>
-			</div>
-			<div class="foot_total">
-				<div class="amout-sum">
-					<span class="txt">已选商品</span>
-					<strong id="selected_amout">{{totalAmount}}</strong>
-					<span class="txt">件</span>
-				</div>
-				<div class="price-sum">
-					<span class="txt">合计（不含运费）：</span>
-					<strong class="selected_price">{{totalPrice | moneyFormat(totalPrice)}}</strong>
-				</div>
-				<div class="btn-area">
-					<a class="btn-sumbit" :class="{'btn-allow': totalAmount}">结&nbsp;算</a>
-				</div>
-			</div>
-		</div>
+      <div class="header">
+        <img
+          src="./../../common/img/logo-round.png"
+          class="header_logo"
+        />
+        <span>购物车</span>
+      </div>
+      <div class="cont_title">
+        <span>全部商品</span>
+      </div>
+      <div class="cont_op">
+        <div class="con_selet">
+          <input
+            type="checkbox"
+            class="con_selectAll"
+            :checked="isSelectedAll"
+            @click.stop="selectedAll(isSelectedAll)"
+          />
+          <label for="con_selectAll">全选</label>
+        </div>
+        <div>商品信息</div>
+        <div>单价</div>
+        <div>数量</div>
+        <div>金额</div>
+        <div>操作</div>
+      </div>
+      <div
+        class="pro_box"
+        v-if="cartgoods.length"
+      >
+        <div
+          class="goods"
+          v-for="(goods, index) in cartgoods"
+          :key="index"
+        >
+          <ul class="item_content">
+            <li class="td td-chk">
+              <div>
+                <input
+                  type="checkbox"
+                  class="checkBox"
+                  :checked="goods.checked"
+                  @click="singleSelected(goods)"
+                />
+              </div>
+            </li>
+            <li class="td td-item">
+              <div class="td-item-pic">
+                <img :src="goods.thumb_url" />
+              </div>
+              <div class="td-item-info">{{goods.goods_name}}</div>
+            </li>
+            <li class="td td-price"><strong>{{goods.price / 100 | moneyFormat}}</strong></li>
+            <li class="td td-amount">
+              <div class="item-amout">
+                <el-input-number
+                  v-model="goods.buy_count"
+                  :min="1"
+                  :max="goods.counts"
+                  @change="updateGoodsCount(goods, goods.buy_count)"
+                ></el-input-number>
+              </div>
+            </li>
+            <li class="td td-sum"><strong>{{goods.buy_count * goods.price /100 | moneyFormat}}</strong></li>
+            <li class="td td-op"><a @click="clickTrash(goods)">删除</a></li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="pro_box"
+        v-else
+      >购物车里空空如也</div>
+    </div>
+    <div id="footer">
+      <div class="foot_select">
+        <input
+          type="checkbox"
+          class="foot_selectAll"
+          name="foot_selectAll"
+          :checked="isSelectedAll"
+          @click.stop="selectedAll(isSelectedAll)"
+        />
+        <label for="foot_selectAll">全选</label>
+      </div>
+      <div class="foot_op">
+        <a
+          class="foot_remove"
+          @click.prevent="emptyCart"
+        >清空购物车</a>
+      </div>
+      <div class="foot_total">
+        <div class="amout-sum">
+          <span class="txt">已选商品</span>
+          <strong id="selected_amout">{{totalAmount}}</strong>
+          <span class="txt">件</span>
+        </div>
+        <div class="price-sum">
+          <span class="txt">合计（不含运费）：</span>
+          <strong class="selected_price">{{totalPrice | moneyFormat(totalPrice)}}</strong>
+        </div>
+        <div class="btn-area">
+          <a
+            class="btn-sumbit"
+            @click="createOrder"
+            :class="{'btn-allow': totalAmount}"
+          >结&nbsp;算</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import {mapState} from 'vuex';
-  import {mapActions} from 'vuex'
-  import { MessageBox } from 'element-ui';
+import { mapState } from 'vuex';
+import { mapActions } from 'vuex'
+import { MessageBox } from 'element-ui';
+import { createOrder } from '../../api/index'
 
-  export default {
-    data(){
-      return{
-        shopsNum: [],
-        isSelectedAll: false,
-        totalPrice: 0,  // 商品总价
-        currentDelGoods: {}, // 当前删除的商品
-        totalAmount: 0,
-      }
-    },
-    computed: {
-      ...mapState(['userInfo', 'cartgoods']),
-    },
-    mounted() {
+export default {
+  data() {
+    return {
+      shopsNum: [],
+      isSelectedAll: false,
+      totalPrice: 0,  // 商品总价
+      currentDelGoods: {}, // 当前删除的商品
+      totalAmount: 0,
+    }
+  },
+  computed: {
+    ...mapState(['userInfo', 'cartgoods']),
+  },
+  mounted() {
+    let user_id = this.userInfo.id;
+    // 请求商品数据
+    this.$store.dispatch('reqCartsGoods', { user_id });
+  },
+  methods: {
+    // 1.更新单个商品数量
+    updateGoodsCount(goods, count) {
       let user_id = this.userInfo.id;
-      // 请求商品数据
-      this.$store.dispatch('reqCartsGoods',{user_id});
+      this.$store.dispatch('updateGoodsCount', { goods, count, user_id });
+      this.getAllGoodsPrice();
     },
-    methods: {
-      // 1.更新单个商品数量
-      updateGoodsCount(goods, count){
+    // 2.是否选中所有商品
+    selectedAll(isSelectedAll) {
+      this.isSelectedAll = !isSelectedAll;
+      this.$store.dispatch('selectedAll', { isSelectedAll });
+      this.getAllGoodsPrice();
+    },
+    // 3.计算商品总价
+    getAllGoodsPrice() {
+      let totalPrice = 0;
+      this.cartgoods.forEach((goods, index) => {
+        if (goods.checked) {
+          totalPrice += goods.price / 100 * goods.buy_count;
+        }
+      });
+      this.totalPrice = totalPrice;
+    },
+    // 4.单个商品的选中与否
+    singleSelected(goods) {
+      this.$store.dispatch('singleSelected', { goods });
+      this.hasSelectedAll();
+      this.getAllGoodsPrice();
+    },
+    // 5.判断是否全选
+    hasSelectedAll() {
+      let flag = true;
+      let totalNum = 0
+      this.cartgoods.forEach((goods, index) => {
+        if (!goods.checked) {
+          flag = false;
+        } else {
+          totalNum += 1;
+        }
+      });
+      this.totalAmount = totalNum;
+      this.isSelectedAll = flag;
+    },
+    // 6.删除单个商品
+    clickTrash(goods) {
+      this.$confirm('您确定删除该商品吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         let user_id = this.userInfo.id;
-        this.$store.dispatch('updateGoodsCount', {goods, count, user_id});
+        this.currentDelGoods = goods;
+        this.$store.dispatch('delSingleGoods', { goods, user_id });
         this.getAllGoodsPrice();
-      },
-      // 2.是否选中所有商品
-      selectedAll(isSelectedAll){
-        this.isSelectedAll = !isSelectedAll;
-        this.$store.dispatch('selectedAll', {isSelectedAll});
-        this.getAllGoodsPrice();
-      },
-      // 3.计算商品总价
-      getAllGoodsPrice(){
-        let totalPrice = 0;
-        this.cartgoods.forEach((goods, index)=>{
-          if(goods.checked){
-            totalPrice += goods.price / 100 * goods.buy_count;
-          }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         });
-        this.totalPrice = totalPrice;
-      },
-      // 4.单个商品的选中与否
-      singleSelected(goods){
-        this.$store.dispatch('singleSelected', {goods});
-        this.hasSelectedAll();
-        this.getAllGoodsPrice();
-      },
-      // 5.判断是否全选
-      hasSelectedAll(){
-        let flag = true;
-        let totalNum = 0
-        this.cartgoods.forEach((goods, index)=>{
-          if(!goods.checked){
-            flag = false;
-          }else{
-            totalNum += 1;
-          }
-        });
-        this.totalAmount = totalNum;
-        this.isSelectedAll = flag;
-      },
-      // 6.删除单个商品
-      clickTrash(goods){
-        this.$confirm('您确定删除该商品吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let user_id = this.userInfo.id;
-          this.currentDelGoods = goods;
-          this.$store.dispatch('delSingleGoods', {goods, user_id});
-          this.getAllGoodsPrice();
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      },
-      // 7.删除所有商品
-      emptyCart(){
-        this.$confirm('您确定删除所有商品吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let user_id = this.userInfo.id;
-          this.$store.dispatch('delAllGoods', {user_id});
-          this.getAllGoodsPrice();
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      },
+      });
     },
-  }
+    // 7.删除所有商品
+    emptyCart() {
+      this.$confirm('您确定删除所有商品吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let user_id = this.userInfo.id;
+        this.$store.dispatch('delAllGoods', { user_id });
+        this.getAllGoodsPrice();
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    // 8.下单
+    createOrder() {
+      this.cartgoods.forEach(async (goods, index) => {
+        if (goods.checked) {
+          let user_id = this.userInfo.id;
+          const res = await createOrder(user_id, goods.goods_id)
+          this.$message({
+            type: 'info',
+            message: res.message
+          });
+        }
+      });
+      //   this.totalPrice = totalPrice;
+    }
+  },
+}
 </script>
 
 <style scoped>
